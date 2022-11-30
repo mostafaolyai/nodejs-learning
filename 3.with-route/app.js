@@ -11,7 +11,8 @@ const app = express()
 app.use(bodyParser.urlencoded({extended: false}))
 
 //#region router
-app.use(adminRouter)
+// when we want to don't iterate admin, in app file add /admin to midleware use
+app.use('/admin',adminRouter)
 app.use(shopRouter)
 
 //#endregion
