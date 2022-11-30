@@ -4,8 +4,13 @@ const express = require('express')
 const adminRouter = require('./routes/admin')
 const shopRouter = require('./routes/shop')
 const bodyParser = require('body-parser')
+const path = require('path');
 
 const app = express()
+
+// static file
+app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, '../===when you want to other folder' 'public','FILENAME')))
 
 //first of all rout
 app.use(bodyParser.urlencoded({extended: false}))
@@ -31,6 +36,8 @@ app.use((req, res, next) => {
 })
 //#endregion
 
-// const server = http.createServer(app)
-
+//404
+app.use((req, res, next) => {
+    res.status(404).send("<h1>NOT FOUND!</h1>")
+})
 app.listen(3000)
