@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require('path')
 
+const pathDir = require('../util/path')
+
 const router = express.Router();
 
 //it needs to be first that '/' because when you add '/add-product', at first see / and routes to '/'
@@ -8,7 +10,7 @@ const router = express.Router();
 router.use('/add-product',(req, res, next) => {
     console.log('add product')
 
-    res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'))
+    res.sendFile(path.join(pathDir, 'views', 'add-product.html'))
 })
 
 //we can limit midleware rout by post get ....
