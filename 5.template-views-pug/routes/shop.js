@@ -9,8 +9,8 @@ const adminData = require('./admin')
 
 router.use('/',(req, res, next) => {
     console.log('shop: ', adminData.db)
-    
-    res.sendFile(path.join(pathDir, 'views', 'shop.html'))
+    const products = adminData.db;
+    res.render('shop', {prods: products, title: 'Shop'})
 })
 
 module.exports = router;

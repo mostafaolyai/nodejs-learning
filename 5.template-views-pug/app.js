@@ -8,6 +8,11 @@ const path = require('path');
 
 const app = express()
 
+//set template engin
+//official doc https://pugjs.org/api/getting-started.html
+app.set('view engine','pug')
+app.set('views','views')
+
 // static file
 app.use(express.static(path.join(__dirname, 'public')))
 // app.use(express.static(path.join(__dirname, '../===when you want to other folder' 'public','FILENAME')))
