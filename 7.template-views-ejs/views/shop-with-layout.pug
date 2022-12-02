@@ -1,0 +1,14 @@
+extends layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    main 
+        if prods.length > 0
+            ul
+                each p in prods 
+                    li #{p.title}
+        else 
+            h1 no product    

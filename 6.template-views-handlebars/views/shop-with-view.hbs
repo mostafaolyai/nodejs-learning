@@ -1,0 +1,11 @@
+<main>
+    {{#if hasProduct}}<!--can't suppot logical checking like prods.length>0-->
+        <ul>
+            {{#each prods}}
+                <li>{{ this.title }}</li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <h1>no product</h1>    
+    {{/if}}
+</main>
