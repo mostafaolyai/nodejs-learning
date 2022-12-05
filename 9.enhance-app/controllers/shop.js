@@ -26,6 +26,11 @@ exports.getProduct = (req, res, next) => {
   })
 }
 
+exports.postProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  console.log('POST: ', prodId)
+}
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
     res.render('shop/index', {
