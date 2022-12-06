@@ -13,9 +13,13 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(null, title, imageUrl, description, price);
-  product.save();
-  res.redirect('/');
+  const product = new Product((Math.random()*10000).toFixed(0), title, imageUrl, description, price);
+  product
+    .save()
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch(err => console.log('admin add product: ', err));
 };
 
 exports.getEditProduct = (req, res, next) => {
