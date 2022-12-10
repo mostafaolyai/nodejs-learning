@@ -14,8 +14,15 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   
-  Product.create({
-    title 
+  // Product.create({
+  //   title ,
+  //   userId: req.user.id
+  // }) OR
+
+  //this method will be created when yspecific relation of to tables in app.js
+  req.user.createProduct({
+    title ,
+    userId: req.user.id
   })
   .then(result => {
     console.log(result)
@@ -30,7 +37,10 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId).then(product => {
+  // Product.findByPk(prodId)
+  req.user.getProducts({where: { id: prodId }})
+  .then(products => {
+    const product = products[0]
     if (!product) {
       return res.redirect('/');
     }
