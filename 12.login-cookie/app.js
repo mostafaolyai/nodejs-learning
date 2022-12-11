@@ -4,11 +4,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session')
+const MongoDBStore = require('connect-mongodb-session')(session)
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const app = express();
+const MONGO_URL = 'mongodb://localhost:27017/nodejs-learning'
+const store = new MongoDBStore({
+  uri: MONGO_URL,
+  collection: 'session'
+})
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -29,7 +35,7 @@ which you should set to false because this will also basically
 ensure that no session gets saved for a request where 
 it doesn't need to be saved because nothing was changed about it
  */
-app.use(session({ secret:'secret', resave:false, saveUninitialized:false }))
+app.use(session({ secret:'secret', resave:false, saveUninitialized:false, store: store }))
 
 app.use((req, res, next) => {
   User.findById('5bab316ce0a7c75f783cb8a8')
@@ -48,7 +54,7 @@ app.use(errorController.get404);
 
 mongoose
   .connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/shop?retryWrites=true'
+    MONGO_URL
   )
   .then(result => {
     User.findOne().then(user => {
