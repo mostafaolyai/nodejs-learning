@@ -9,13 +9,15 @@ const MongoDBStore = require('connect-mongodb-session')(session)
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
+const csrf = require('csurf');
+
 const app = express();
 const MONGO_URL = 'mongodb://localhost:27017/nodejs-learning'
 const store = new MongoDBStore({
   uri: MONGO_URL,
   collection: 'session'
 })
-
+const csrfProtection = csrf()
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -37,6 +39,7 @@ it doesn't need to be saved because nothing was changed about it
  */
 app.use(session({ secret:'secret', resave:false, saveUninitialized:false, store: store }))
 
+app.use(csrfProtection)
 app.use((req, res, next) => {
   User.findById('5bab316ce0a7c75f783cb8a8')
     .then(user => {
@@ -44,6 +47,11 @@ app.use((req, res, next) => {
       next();
     })
     .catch(err => console.log(err));
+});
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next()
 });
 
 app.use('/admin', adminRoutes);
