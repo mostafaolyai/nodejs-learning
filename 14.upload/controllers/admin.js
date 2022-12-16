@@ -10,9 +10,11 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.image;
+  const imageUrl = '';//req.body.image;
   const price = req.body.price;
   const description = req.body.description;
+  
+  console.log(req.file)
   const product = new Product({
     title: title,
     price: price,
@@ -57,9 +59,10 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
-  const updatedImageUrl = req.body.imageUrl;
+  const updatedImageUrl =null// req.file;
   const updatedDesc = req.body.description;
 
+  console.log(req.file)
   Product.findById(prodId)
     .then(product => {
       if (product.userId.toString() !== req.user._id.toString()) {

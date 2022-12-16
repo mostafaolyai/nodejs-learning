@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer')
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -27,7 +28,33 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
+/**
+ * {
+  fieldname: 'image',
+  originalname: 'photo_2022-9-50-26_auto_x2.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'images',
+  filename: '6e452d75e9ac984607ba7be1128d6fbb',
+  path: 'images\\6e452d75e9ac984607ba7be1128d6fbb',
+  size: 166600
+}
+ */
+const fileStorage = multer.diskStorage({
+  destination: (req, res, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => [
+    cb(null, new Date().toISOString() + '-' + file.originalname)
+  ]
+})
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/png') cb(null, true)
+  else cb(null, false)
+}
+
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'))//image is field name
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
