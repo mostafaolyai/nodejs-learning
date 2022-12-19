@@ -10,7 +10,7 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = '';//req.body.image;
+  const imageUrl = req.file.path;
   const price = req.body.price;
   const description = req.body.description;
   
@@ -59,7 +59,7 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
-  const updatedImageUrl =null// req.file;
+  const updatedImageUrl =req.file.path;
   const updatedDesc = req.body.description;
 
   console.log(req.file)
